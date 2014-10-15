@@ -3,7 +3,7 @@ import org.testng.annotations.Test;
 
 public class CreateNewContactTest extends TestBase{
   @Test
-  public void testGroupCreation() throws Exception {
+  public void testContactCreation() throws Exception {
 	openMainPage();
     initContactCreation();
     ContactData contact = new ContactData();
