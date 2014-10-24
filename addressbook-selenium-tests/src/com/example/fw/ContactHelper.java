@@ -38,4 +38,26 @@ public class ContactHelper extends BaseHelper {
 		click(By.linkText("home page"));
 	}
 
+	public void deleteContact(int index) {
+		selectContactByIndex(index);
+		click(By.xpath(".//*[@id='content']/form[2]/input[2]"));	
+	}
+
+	private void selectContactByIndex(int index) {
+		By locator = By.xpath(".//*[@name='entry']["+index+"]/td[7]/a/img");
+		click(locator);
+	}
+
+
+	public void submitContactModification() {
+		click(By.xpath(".//*[@id='content']/form[1]/input[11]"));
+		
+	}
+
+	public void initModificationContact(int index) {
+		selectContactByIndex(index);
+
+	}
+
+
 }

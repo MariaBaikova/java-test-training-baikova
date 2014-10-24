@@ -27,5 +27,25 @@ public class GroupHelper extends BaseHelper{
 	public void initGroupCreation() {
 		click(By.name("new"));
 	}
+
+	public void deleteGroup(int index) {
+		selectGroupByIndex(index);
+		click(By.name("delete"));
+	}
+
+	private void selectGroupByIndex(int index) {
+		click(By.xpath(".//input[@name='selected[]']["+index+"]"));
+	}
+
+	public void initModificationGroup(int index) {
+		selectGroupByIndex(index);
+		click(By.name("edit"));
+		
+	}
+
+	public void submitGroupModification() {
+		click(By.name("update"));
+		
+	}
 	
 }
