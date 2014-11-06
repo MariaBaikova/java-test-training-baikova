@@ -1,16 +1,19 @@
 package com.example.fw;
 
+import java.util.List;
+
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 
 public abstract class BaseHelper {
 	
 	protected ApplicationManager manager;
-	protected WebDriver driver;
+	private WebDriver driver;
 	public boolean acceptNextAlert = true;
 	
 	public BaseHelper(ApplicationManager manager){
@@ -20,7 +23,7 @@ public abstract class BaseHelper {
 	
 	public boolean isElementPresent(By by) {
 	    try {
-	     driver.findElement(by);
+	      findElement(by);
 	      return true;
 	    } catch (NoSuchElementException e) {
 	      return false;
@@ -52,19 +55,32 @@ public abstract class BaseHelper {
 	  }
 
 	protected void type(By locator, String text){
-		if (text!=null){
-			driver.findElement(locator).clear();
-			driver.findElement(locator).sendKeys(text);
-		}
+		 if (text == null || text == "") return;
+		 WebElement element = findElement(locator);
+		 element.clear();
+		 element.sendKeys(text);
 	}
 
 	protected void click(By locator) {
-		manager.driver.findElement(locator).click();
+		findElement(locator).click();
 	}
 	
 	protected void selectByText(By locator, String text) {
 		if (text!=null){
-			new Select(manager.driver.findElement(locator)).selectByVisibleText(text);
+			new Select(findElement(locator)).selectByVisibleText(text);
 		}
+	}
+	
+	private WebElement findElement(By locator) {
+		return driver.findElement(locator);
+	}
+
+	protected void getURL(String string) {
+		driver.get(string);
+		
+	}
+	
+	protected List<WebElement> findElements(By name) {
+		return driver.findElements(name);
 	}
 }
