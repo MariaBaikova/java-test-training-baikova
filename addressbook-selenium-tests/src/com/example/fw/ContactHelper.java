@@ -1,6 +1,10 @@
 package com.example.fw;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.openqa.selenium.By;
+
 import com.example.tests.ContactData;
 
 public class ContactHelper extends BaseHelper {
@@ -44,7 +48,7 @@ public class ContactHelper extends BaseHelper {
 	}
 
 	private void selectContactByIndex(int index) {
-		By locator = By.xpath(".//*[@name='entry']["+index+"]/td[7]/a/img");
+		By locator = By.xpath(".//*[@name='entry']["+(index+1)+"]/td[7]/a/img");
 		click(locator);
 	}
 
@@ -57,6 +61,21 @@ public class ContactHelper extends BaseHelper {
 	public void initModificationContact(int index) {
 		selectContactByIndex(index);
 
+	}
+
+
+	public List<ContactData> getContacts() {
+		List <ContactData> contacts = new ArrayList <ContactData>();
+		int rowsTable = findElements(By.name("entry")).size();
+		for (int i = 0; i < rowsTable; i++) {
+			ContactData contact = new ContactData();
+			contact.firstName = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[3]"));
+			contact.lastName = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[2]"));
+			contact.email = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[4]"));
+			contact.home = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[5]"));
+			contacts.add(contact);
+		}
+		return contacts;
 	}
 
 

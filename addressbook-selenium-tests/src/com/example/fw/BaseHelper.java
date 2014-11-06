@@ -80,6 +80,11 @@ public abstract class BaseHelper {
 		
 	}
 	
+	protected String getText(By locator) {
+		return findElement(locator).getText();
+		
+	}
+	
 	protected List<WebElement> findElements(By name) {
 		return driver.findElements(name);
 	}
