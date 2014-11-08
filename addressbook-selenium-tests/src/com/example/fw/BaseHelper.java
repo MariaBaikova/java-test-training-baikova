@@ -55,10 +55,11 @@ public abstract class BaseHelper {
 	  }
 
 	protected void type(By locator, String text){
-		 if (text == null || text == "") return;
-		 WebElement element = findElement(locator);
-		 element.clear();
-		 element.sendKeys(text);
+		 if (text != null){
+			 WebElement element = findElement(locator);
+			 element.clear();
+			 element.sendKeys(text);
+		 }
 	}
 
 	protected void click(By locator) {
@@ -71,7 +72,7 @@ public abstract class BaseHelper {
 		}
 	}
 	
-	private WebElement findElement(By locator) {
+	protected WebElement findElement(By locator) {
 		return driver.findElement(locator);
 	}
 

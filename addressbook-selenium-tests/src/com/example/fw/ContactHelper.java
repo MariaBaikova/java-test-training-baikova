@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 import com.example.tests.ContactData;
 
@@ -66,17 +67,27 @@ public class ContactHelper extends BaseHelper {
 
 	public List<ContactData> getContacts() {
 		List <ContactData> contacts = new ArrayList <ContactData>();
-		int rowsTable = findElements(By.name("entry")).size();
-		for (int i = 0; i < rowsTable; i++) {
+		List<WebElement> rows = getContactRows();
+		for (WebElement row : rows) {
 			ContactData contact = new ContactData();
-			contact.firstName = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[3]"));
-			contact.lastName = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[2]"));
-			contact.email = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[4]"));
-			contact.home = getText(By.xpath(".//*[@name='entry']["+(i+1)+"]/td[5]"));
+			contact.lastName = row.findElement(By.xpath(".//td[2]")).getText();
+			contact.firstName = row.findElement(By.xpath(".//td[3]")).getText();
 			contacts.add(contact);
 		}
 		return contacts;
 	}
 
-
+	public List<WebElement> getContactRows(){
+		List <WebElement> contactRows = new ArrayList <WebElement>();
+		int rowsTable = getRowCountContact();
+		for(int i = 0; i < rowsTable; i++){
+			WebElement row = findElement(By.xpath(".//*[@name='entry']["+(i+1)+"]"));
+			contactRows.add(row);
+		}
+		return contactRows;
+	}
+	
+	public int getRowCountContact(){
+		return findElements(By.name("entry")).size();
+	}
 }
