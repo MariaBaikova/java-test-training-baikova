@@ -78,7 +78,6 @@ public abstract class BaseHelper {
 
 	protected void getURL(String string) {
 		driver.get(string);
-		
 	}
 	
 	protected String getText(By locator) {
@@ -88,5 +87,9 @@ public abstract class BaseHelper {
 	
 	protected List<WebElement> findElements(By name) {
 		return driver.findElements(name);
+	}
+	
+	protected String getCurrentURL() {
+		return driver.getCurrentUrl();
 	}
 }

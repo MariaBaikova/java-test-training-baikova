@@ -27,34 +27,36 @@ public class TestBase {
 	   public Iterator<Object[]> randomValidGroupGenerator(){
 		  List <Object[]> list = new ArrayList<Object[]>();
 		  for (int i = 0; i < 5; i++)	{
-			  GroupData group = new GroupData();
-			  group.name =   generateRandomString();
-			  group.footer = generateRandomString();
-			  group.header = generateRandomString();
+			  GroupData group = new GroupData()
+			  	.withName(generateRandomString())
+			  	.withHeader(generateRandomString())
+			  	.withFooter(generateRandomString());
 			  list.add(new Object[]{group});
 		  }
 		  return list.iterator();
 		}
 	   
-	   @DataProvider
+	   
+
+	@DataProvider
 	   public Iterator<Object[]> randomValidContactGenerator(){
 		  List <Object[]> list = new ArrayList<Object[]>();
 		  for (int i = 0; i < 5; i++)	{
-			  	ContactData contact = new ContactData();
-			  	contact.firstName = generateNotEmptyRandomString();
-			    contact.lastName =  generateRandomString();
-			    contact.address =   generateRandomString();
-			    contact.homeTelephone = generateRandomNumber();
-			    contact.mobileTelephone = generateRandomNumber();
-			    contact.workTelephone = generateRandomNumber();
-			    contact.email = generateRandomString()+"@mail.ru";
-			    contact.email_2 = generateRandomString()+"@mail.ru";
-			    contact.bDay = "11";
-			    contact.bMonth = "November";
-			    contact.bYear = "1990";
-			    contact.address_2 = generateRandomString();
-			    contact.home = generateRandomNumber();
-			    contact.group = "";
+			  	ContactData contact = new ContactData()
+			  			.withFirstName(generateNotEmptyRandomString())
+			  			.withLastName(generateRandomString())
+			  			.withAddress(generateRandomString())
+			  			.withHomeTelephone(generateRandomNumber())
+			  			.withMobileTelephone(generateRandomNumber())
+			  			.withWorkTelephone(generateRandomNumber())
+			  			.withEmail(generateRandomString()+"@mail.ru")
+			  			.withEmail_2(generateRandomString()+"@mail.ru")
+			  			.withBday("11")
+			  			.withBmonth("November")
+			  			.withByear("1990")
+			  			.withAddress_2(generateRandomString())
+			  			.withHome(generateRandomNumber())
+			  			.withGroup("");
 			    list.add(new Object[]{contact});
 		  }
 		  return list.iterator();

@@ -11,13 +11,12 @@ import org.testng.annotations.Test;
 public class ContactRemoveTests extends TestBase {
 	@Test
 	  public void DeleteSomeContact() throws Exception {
-	    app.getNavigationHelper().openMainPage();
+		
 	  //save old state
 	    List <ContactData> oldList = app.getContactHelper().getContacts();
 	    Random rnd  = new Random();
 	    int index = rnd.nextInt(oldList.size()-1);
 	    app.getContactHelper().deleteContact(index);
-	    app.getContactHelper().returnToHomePage();
 	    
 	    //save new state
 	    List <ContactData> newList = app.getContactHelper().getContacts();
