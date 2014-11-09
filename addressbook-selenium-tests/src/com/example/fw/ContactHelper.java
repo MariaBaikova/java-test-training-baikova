@@ -7,6 +7,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 import com.example.tests.ContactData;
+import com.example.utils.SortedListOf;
 
 public class ContactHelper extends BaseHelper {
 	
@@ -16,9 +17,9 @@ public class ContactHelper extends BaseHelper {
 		super(manager);
 	}
 
-	private List<ContactData> cachedContacts;
+	private SortedListOf<ContactData> cachedContacts;
 	
-	public List<ContactData> getContacts() {
+	public SortedListOf<ContactData> getContacts() {
 		if (cachedContacts == null){
 			rebuildCached();
 		}
@@ -26,7 +27,7 @@ public class ContactHelper extends BaseHelper {
 	}
 	
 	private void rebuildCached() {
-		cachedContacts = new ArrayList <ContactData>();
+		cachedContacts = new SortedListOf <ContactData>();
 		manager.navigateTo().mainPage();
 		List<WebElement> rows = getContactRows();
 		for (WebElement row : rows) {
