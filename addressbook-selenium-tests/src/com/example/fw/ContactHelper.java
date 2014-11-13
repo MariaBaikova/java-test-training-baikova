@@ -6,8 +6,13 @@ import java.util.List;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
+import static org.junit.Assert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+
 import com.example.tests.ContactData;
+import com.example.utils.ListOf;
 import com.example.utils.SortedListOf;
+
 
 public class ContactHelper extends BaseHelper {
 	
@@ -33,7 +38,8 @@ public class ContactHelper extends BaseHelper {
 		for (WebElement row : rows) {
 			ContactData contact = new ContactData()
 			.setLastName(row.findElement(By.xpath(".//td[2]")).getText())
-			.setFirstName(row.findElement(By.xpath(".//td[3]")).getText());
+			.setFirstName(row.findElement(By.xpath(".//td[3]")).getText())
+			.setTelephone(row.findElement(By.xpath(".//td[5]")).getText());
 			cachedContacts.add(contact);
 		}
 	}
@@ -65,6 +71,31 @@ public class ContactHelper extends BaseHelper {
     	rebuildCached();
 		return this;
 	}
+	
+	public void checkContactsOnPrintPage(SortedListOf<ContactData> contactList){
+		ListOf<String> printContacts = getListDatafromPrintPage();
+		for(int i = 0; i < printContacts.size(); i++){
+			String FIO = contactList.get(i).getFirstName() + " " + contactList.get(i).getLastName();
+			String telephone = contactList.get(i).getTelephone();
+			assertThat(printContacts.get(i), containsString(FIO.trim()));
+			assertThat(printContacts.get(i).replace(" ", ""), containsString(telephone));
+		}
+	}
+	public ListOf<String> getListDatafromPrintPage(){
+		ListOf<String> contactsData = new ListOf<String>();
+		manager.navigateTo().printPhonesPage(); 
+		List<WebElement> contactCells = getContactCellOnPrintPage();
+		for (WebElement cell : contactCells) {
+			contactsData.add(cell.getText());
+		}
+		return contactsData;
+	}
+
+	public int getCountContactOnPrintPage(){
+	    manager.navigateTo().printPhonesPage(); 
+		return getCountElement(By.xpath(".//*[@valign='top']"));
+	}
+	
 	
 //------------------------------------------------------------------------------------------------	
 	public ContactHelper fillFormContact(ContactData contact, boolean formType) {
@@ -130,16 +161,12 @@ public class ContactHelper extends BaseHelper {
 
 	public List<WebElement> getContactRows(){
 		List <WebElement> contactRows = new ArrayList <WebElement>();
-		int rowsTable = getRowCountContact();
+		int rowsTable = getContactCount();
 		for(int i = 0; i < rowsTable; i++){
 			WebElement row = findElement(By.xpath(".//*[@name='entry']["+(i+1)+"]"));
 			contactRows.add(row);
 		}
 		return contactRows;
-	}
-	
-	public int getRowCountContact(){
-		return findElements(By.name("entry")).size();
 	}
 
 	private ContactHelper submitContactDeletion() {
@@ -148,4 +175,20 @@ public class ContactHelper extends BaseHelper {
 		return this;
 	}
 
+	public List<WebElement> getContactCellOnPrintPage(){
+		List <WebElement> contactCells = new ArrayList <WebElement>();
+		int rowsTable = getCountElement(By.xpath(".//*[@valign='top'][1]"));
+		int colsTable = getCountElement(By.xpath(".//*[@id='view']/tbody/tr[1]/td"));
+		for(int i = 0; i < rowsTable; i++){
+			for(int j = 0; j < colsTable; j++) {
+			WebElement contactCell = findElement(By.xpath(".//*[@id='view']/tbody/tr["+ (i+1) +"]/td["+ (j+1) +"]"));
+			contactCells.add(contactCell);
+			}
+		}
+		return contactCells;
+	}
+	
+	public int getContactCount(){
+		return getCountElement(By.name("entry"));
+	}
 }

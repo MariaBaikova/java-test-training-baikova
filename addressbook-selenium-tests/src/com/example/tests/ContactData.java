@@ -14,6 +14,7 @@ public class ContactData implements Comparable <ContactData>{
 	private String bYear;
 	private String address_2;
 	private String home;
+	private String telephone;
 	private String group;
 	
 	public String getFirstName() {
@@ -277,6 +278,15 @@ public class ContactData implements Comparable <ContactData>{
 
 	public ContactData withGroup(String group) {
 		this.group = group;
+		return this;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public ContactData setTelephone(String telephone) {
+		this.telephone = telephone;
 		return this;
 	}
 	

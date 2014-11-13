@@ -69,13 +69,13 @@ public class TestBase {
 	 		  return  "";
 	 	  }
 	 	  else {
-	 		  return "test "+rnd.nextInt();
+	 		  return "test"+rnd.nextInt();
 	 	  }
 	   }
 	   
 	   public String generateNotEmptyRandomString(){
 		 	  Random rnd  = new Random();
-		 	  return "test "+rnd.nextInt();
+		 	  return "test"+rnd.nextInt();
 		   }
 	   
 	   public String generateRandomNumber(){

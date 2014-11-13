@@ -92,4 +92,8 @@ public abstract class BaseHelper {
 	protected String getCurrentURL() {
 		return driver.getCurrentUrl();
 	}
+	
+	protected int getCountElement(By locator) {
+		return driver.findElements(locator).size();
+	}
 }

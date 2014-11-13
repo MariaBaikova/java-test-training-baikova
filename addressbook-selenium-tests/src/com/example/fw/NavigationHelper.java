@@ -32,4 +32,20 @@ public class NavigationHelper extends BaseHelper{
 			return false;
 		}
 	}
+
+	public void printPhonesPage() {
+		if (! onPrintPhonesPage()){
+			click(By.linkText("print phones"));
+		}
+	}
+
+	private boolean onPrintPhonesPage() {
+		if (getCurrentURL().contains("phones")
+				&& getCurrentURL().contains("print")
+				&& findElements(By.id("view")).size() > 0) {
+				return true;
+			}else {
+				return false;
+			}
+	}
 }
