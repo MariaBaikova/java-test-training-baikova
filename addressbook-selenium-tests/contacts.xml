@@ -1,0 +1,34 @@
+<list>
+  <contact>
+    <firstName>test1836717400</firstName>
+    <lastName></lastName>
+    <address></address>
+    <homeTelephone>1533247021</homeTelephone>
+    <mobileTelephone>484488374</mobileTelephone>
+    <workTelephone>66038298</workTelephone>
+    <email>test7323747@mail.ru</email>
+    <email__2>test1240472420@mail.ru</email__2>
+    <bDay>11</bDay>
+    <bMonth>November</bMonth>
+    <bYear>1990</bYear>
+    <address__2></address__2>
+    <home>1431433225</home>
+    <group></group>
+  </contact>
+  <contact>
+    <firstName>test-945823263</firstName>
+    <lastName>test-603464154</lastName>
+    <address>test1224172966</address>
+    <homeTelephone>-60333780</homeTelephone>
+    <mobileTelephone>-890994603</mobileTelephone>
+    <workTelephone>1096215419</workTelephone>
+    <email>@mail.ru</email>
+    <email__2>@mail.ru</email__2>
+    <bDay>11</bDay>
+    <bMonth>November</bMonth>
+    <bYear>1990</bYear>
+    <address__2></address__2>
+    <home>355691796</home>
+    <group></group>
+  </contact>
+</list>
