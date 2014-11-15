@@ -3,12 +3,13 @@ package com.example.tests;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 
+import static com.example.tests.GroupDataGenerator.generateRandomGroups;
+import static com.example.tests.ContactDataGenerator.generateRandomContacts;
 import com.example.fw.ApplicationManager;
 public class TestBase {
 	protected ApplicationManager app;
@@ -25,61 +26,31 @@ public class TestBase {
 	
 	@DataProvider
 	   public Iterator<Object[]> randomValidGroupGenerator(){
-		  List <Object[]> list = new ArrayList<Object[]>();
-		  for (int i = 0; i < 5; i++)	{
-			  GroupData group = new GroupData()
-			  	.withName(generateRandomString())
-			  	.withHeader(generateRandomString())
-			  	.withFooter(generateRandomString());
-			  list.add(new Object[]{group});
-		  }
+		  List <Object[]> list = wrapGroupsForDataProvider(generateRandomGroups(5));
 		  return list.iterator();
 		}
 	   
 	   
 
+	private List<Object[]> wrapGroupsForDataProvider(List<GroupData> groups) {
+		 List <Object[]> list = new ArrayList<Object[]>();
+		  for (GroupData group : groups)	{
+			  list.add(new Object[]{group});
+		  }
+		return list;
+	}
+
 	@DataProvider
 	   public Iterator<Object[]> randomValidContactGenerator(){
-		  List <Object[]> list = new ArrayList<Object[]>();
-		  for (int i = 0; i < 5; i++)	{
-			  	ContactData contact = new ContactData()
-			  			.withFirstName(generateNotEmptyRandomString())
-			  			.withLastName(generateRandomString())
-			  			.withAddress(generateRandomString())
-			  			.withHomeTelephone(generateRandomNumber())
-			  			.withMobileTelephone(generateRandomNumber())
-			  			.withWorkTelephone(generateRandomNumber())
-			  			.withEmail(generateRandomString()+"@mail.ru")
-			  			.withEmail_2(generateRandomString()+"@mail.ru")
-			  			.withBday("11")
-			  			.withBmonth("November")
-			  			.withByear("1990")
-			  			.withAddress_2(generateRandomString())
-			  			.withHome(generateRandomNumber())
-			  			.withGroup("");
-			    list.add(new Object[]{contact});
-		  }
+		  List <Object[]> list = wrapContactsForDataProvider(generateRandomContacts(5));
 		  return list.iterator();
 		}
 		  
-		
-	   public String generateRandomString(){
-	 	  Random rnd  = new Random();
-	 	  if (rnd.nextInt(3) ==0) {
-	 		  return  "";
-	 	  }
-	 	  else {
-	 		  return "test"+rnd.nextInt();
-	 	  }
-	   }
-	   
-	   public String generateNotEmptyRandomString(){
-		 	  Random rnd  = new Random();
-		 	  return "test"+rnd.nextInt();
-		   }
-	   
-	   public String generateRandomNumber(){
-		 	  Random rnd  = new Random();
-		 	  return rnd.nextInt()+"";
-		   }
+	   private List<Object[]> wrapContactsForDataProvider(List<ContactData> contacts) {
+			 List <Object[]> list = new ArrayList<Object[]>();
+			  for (ContactData contact : contacts)	{
+				  list.add(new Object[]{contact});
+			  }
+			return list;
+		}
 }
