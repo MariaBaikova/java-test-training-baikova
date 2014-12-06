@@ -1,6 +1,7 @@
 package com.example.fw;
 
 
+
 public class ContactHelper extends BaseHelper{
 
 	public ContactHelper(ApplicationManager manager) {
@@ -45,6 +46,25 @@ public class ContactHelper extends BaseHelper{
 		manager.getAutoItHelper().click("Cancel")
 			.winWaitAndActivate("AddressBook Portable", "", 5000);
 		return contact;
+		
+	}
+
+	public void deleteAllContacts() {
+		manager.getAutoItHelper().winWaitAndActivate("AddressBook Portable", "", 5000)
+			.click("TListView1")
+			.click("Select All")
+			.click("Delete")
+			.winWaitAndActivate("Confirm", "", 5000)
+			.click("&Yes")
+			.winWaitAndActivate("AddressBook Portable", "", 5000);
+			
+	}
+
+	public boolean checkEmptyList() {
+		return manager.getAutoItHelper().winWaitAndActivate("AddressBook Portable", "", 5000)
+		.click("TListView1")
+		.send("{DOWN}{SPACE}")
+		.click("Edit").winExists("Information", "", 5000);
 		
 	}
 

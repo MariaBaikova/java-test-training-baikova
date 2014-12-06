@@ -61,5 +61,9 @@ public class AutoItHelper extends BaseHelper {
 	public String getText(String controlID) {
 		return aux.controlGetText(winTitle, winText, controlID);
 	}
+	
+	public boolean winExists(String winTitle, String winText, int timeout){
+		return aux.winExists(winTitle, winText);
+	}
     
 }
