@@ -14,7 +14,7 @@ import com.example.utils.ListOf;
 import com.example.utils.SortedListOf;
 
 
-public class ContactHelper extends BaseHelper {
+public class ContactHelper extends WebDriverHelperBase {
 	
 	public static boolean CREATION = true;
 	public static boolean MODIFICATION = false;
@@ -32,16 +32,7 @@ public class ContactHelper extends BaseHelper {
 	}
 	
 	private void rebuildCached() {
-		cachedContacts = new SortedListOf <ContactData>();
-		manager.navigateTo().mainPage();
-		List<WebElement> rows = getContactRows();
-		for (WebElement row : rows) {
-			ContactData contact = new ContactData()
-			.setLastName(row.findElement(By.xpath(".//td[2]")).getText())
-			.setFirstName(row.findElement(By.xpath(".//td[3]")).getText())
-			.setTelephone(row.findElement(By.xpath(".//td[5]")).getText());
-			cachedContacts.add(contact);
-		}
+		cachedContacts = new SortedListOf <ContactData>(manager.getHibernateHelper().listContacts());
 	}
 
 	

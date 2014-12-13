@@ -1,6 +1,5 @@
 package com.example.fw;
 
-import java.util.List;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -8,7 +7,7 @@ import org.openqa.selenium.WebElement;
 import com.example.tests.GroupData;
 import com.example.utils.SortedListOf;
 
-public class GroupHelper extends BaseHelper{
+public class GroupHelper extends WebDriverHelperBase{
 	
 	public GroupHelper(ApplicationManager manager){
 		super(manager);
@@ -33,15 +32,7 @@ public class GroupHelper extends BaseHelper{
 		return cachedGroups;
 	}
 	private void rebuildCache() {
-		cachedGroups = new SortedListOf<GroupData>();
-		manager.navigateTo().groupsPage();
-		List <WebElement> checkboxes = findElements(By.name("selected[]"));
-		for (WebElement checkbox : checkboxes) {
-			String title = checkbox.getAttribute("title");
-			String name = title.substring("Select (".length(), title.length() - ")".length());
-			cachedGroups.add(new GroupData().withName(name));
-		}
-	
+		cachedGroups = new SortedListOf<GroupData>(manager.getHibernateHelper().listGroups());
 	}
 
 	public GroupHelper deleteGroup(int index) {

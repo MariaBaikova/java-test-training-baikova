@@ -1,5 +1,4 @@
 package com.example.tests;
-import static com.example.tests.ContactDataGenerator.loadContactsFromCSVFile;
 import static com.example.tests.ContactDataGenerator.loadContactsFromXMLFile;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
