@@ -170,7 +170,12 @@ public class ContactData implements Comparable <ContactData>{
 
 	@Override
 	public String toString() {
-		return "ContactData [firstName=" + firstName + ", lastName=" + lastName+"]";
+		return "ContactData [firstName=" + firstName + ", lastName=" + lastName
+				+ ", address=" + address + ", homeTelephone=" + homeTelephone
+				+ ", mobileTelephone=" + mobileTelephone + ", workTelephone="
+				+ workTelephone + ", email=" + email + ", email_2=" + email_2
+				+ ", bDay=" + bDay + ", bMonth=" + bMonth + ", bYear=" + bYear
+				+ ", address_2=" + address_2 + ", home=" + home + "]";
 	}
 
 	@Override
@@ -188,6 +193,41 @@ public class ContactData implements Comparable <ContactData>{
 		if (getClass() != obj.getClass())
 			return false;
 		ContactData other = (ContactData) obj;
+		if (address == null) {
+			if (other.address != null)
+				return false;
+		} else if (!address.equals(other.address))
+			return false;
+		if (address_2 == null) {
+			if (other.address_2 != null)
+				return false;
+		} else if (!address_2.equals(other.address_2))
+			return false;
+		if (bDay == null) {
+			if (other.bDay != null)
+				return false;
+		} else if (!bDay.equals(other.bDay))
+			return false;
+		if (bMonth == null) {
+			if (other.bMonth != null)
+				return false;
+		} else if (!bMonth.equals(other.bMonth))
+			return false;
+		if (bYear == null) {
+			if (other.bYear != null)
+				return false;
+		} else if (!bYear.equals(other.bYear))
+			return false;
+		if (email == null) {
+			if (other.email != null)
+				return false;
+		} else if (!email.equals(other.email))
+			return false;
+		if (email_2 == null) {
+			if (other.email_2 != null)
+				return false;
+		} else if (!email_2.equals(other.email_2))
+			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
 				return false;
@@ -197,6 +237,16 @@ public class ContactData implements Comparable <ContactData>{
 			if (other.lastName != null)
 				return false;
 		} else if (!lastName.equals(other.lastName))
+			return false;
+		if (mobileTelephone == null) {
+			if (other.mobileTelephone != null)
+				return false;
+		} else if (!mobileTelephone.equals(other.mobileTelephone))
+			return false;
+		if (workTelephone == null) {
+			if (other.workTelephone != null)
+				return false;
+		} else if (!workTelephone.equals(other.workTelephone))
 			return false;
 		return true;
 	}

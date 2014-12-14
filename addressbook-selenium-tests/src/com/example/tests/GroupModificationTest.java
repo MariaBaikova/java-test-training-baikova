@@ -2,6 +2,7 @@ package com.example.tests;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
+
 import java.util.Random;
 
 import org.testng.annotations.Test;
@@ -14,7 +15,7 @@ public class GroupModificationTest extends TestBase{
 	  public void modificationSomeGroup(GroupData group) throws Exception {
 	    
 	   //save old state
-		SortedListOf <GroupData> oldList = app.getgroupHelper().getGroups();
+		SortedListOf <GroupData> oldList =  new  SortedListOf <GroupData> (app.getHibernateHelper().listGroups());
 	    Random rnd  = new Random();
 	    int index = rnd.nextInt(oldList.size()-1);
 	    

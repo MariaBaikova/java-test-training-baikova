@@ -8,7 +8,9 @@ import org.openqa.selenium.WebElement;
 
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.anyOf;
 import com.example.tests.ContactData;
 import com.example.utils.ListOf;
 import com.example.utils.SortedListOf;
@@ -25,10 +27,17 @@ public class ContactHelper extends WebDriverHelperBase {
 	private SortedListOf<ContactData> cachedContacts;
 	
 	public SortedListOf<ContactData> getContacts() {
-		if (cachedContacts == null){
-			rebuildCached();
+		SortedListOf <ContactData> listContacts = new SortedListOf <ContactData>();
+		manager.navigateTo().mainPage();
+		List<WebElement> rows = getContactRows();
+		for (WebElement row : rows) {
+			ContactData contact = new ContactData()
+			.setLastName(row.findElement(By.xpath(".//td[2]")).getText())
+			.setFirstName(row.findElement(By.xpath(".//td[3]")).getText())
+			.setTelephone(row.findElement(By.xpath(".//td[5]")).getText());
+			listContacts.add(contact);
 		}
-		return cachedContacts;
+		return listContacts;
 	}
 	
 	private void rebuildCached() {
@@ -56,6 +65,9 @@ public class ContactHelper extends WebDriverHelperBase {
 	
 	public ContactHelper modifyContact(int index, ContactData contact) {
 		initModificationContact(index);
+		ContactData editContact = getContactFromEditPage();
+		rebuildCached();
+		assertThat(cachedContacts,hasItem(editContact));
     	fillFormContact(contact, MODIFICATION);
     	submitContactModification();
     	returnToHomePage();
@@ -63,6 +75,21 @@ public class ContactHelper extends WebDriverHelperBase {
 		return this;
 	}
 	
+	public ContactData getContactFromEditPage() {
+		return new ContactData().withFirstName(getAttribute(By.name("firstname"), "value"))
+				.withLastName(getAttribute(By.name("lastname"), "value"))
+				.withAddress(getAttribute(By.name("address"), "value"))
+				.withAddress(getText(By.name("address")))
+				.withAddress_2(getAttribute(By.name("address2"), "value"))
+				.withBday(getAttribute(By.name("bday"), "value"))
+				.withBmonth(getAttribute(By.name("bmonth"), "value"))
+				.withByear(getAttribute(By.name("byear"), "value"))
+				.withWorkTelephone(getAttribute(By.name("work"), "value"))
+				.withMobileTelephone(getAttribute(By.name("mobile"), "value"))
+				.withEmail(getAttribute(By.name("email"), "value"))
+				.withEmail_2(getAttribute(By.name("email2"), "value"));
+	}
+
 	public void checkContactsOnPrintPage(SortedListOf<ContactData> contactList){
 		ListOf<String> printContacts = getListDatafromPrintPage();
 		for(int i = 0; i < printContacts.size(); i++){
@@ -87,6 +114,13 @@ public class ContactHelper extends WebDriverHelperBase {
 		return getCountElement(By.xpath(".//*[@valign='top']"));
 	}
 	
+	public void compareContactsListWithDB(SortedListOf<ContactData> contactList){
+		for (int i = 0; i < contactList.size(); i++){
+			assertThat(contactList.get(i).getFirstName(), equalTo(cachedContacts.get(i).getFirstName()));
+			assertThat(contactList.get(i).getLastName(), equalTo(cachedContacts.get(i).getLastName()));
+			assertThat(contactList.get(i).getTelephone(), anyOf(equalTo(cachedContacts.get(i).getHomeTelephone().replace(" ", "")), equalTo(cachedContacts.get(i).getMobileTelephone().replace(" ", "")),equalTo(cachedContacts.get(i).getWorkTelephone().replace(" ", ""))));
+		}
+	}
 	
 //------------------------------------------------------------------------------------------------	
 	public ContactHelper fillFormContact(ContactData contact, boolean formType) {
@@ -101,7 +135,7 @@ public class ContactHelper extends WebDriverHelperBase {
 	    selectByText(By.name("bday"), contact.getbDay());
 	    selectByText(By.name("bmonth"), contact.getbMonth());	  
 	    type(By.name("byear"),contact.getbYear());   
-	    if (formType == CREATION){
+	   if (formType == CREATION){
 	    	selectByText(By.name("new_group"), contact.getGroup());   
 	    }
 	    else{

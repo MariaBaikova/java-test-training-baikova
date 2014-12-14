@@ -1,6 +1,12 @@
 package com.example.fw;
 
 
+
+import static org.hamcrest.Matchers.hasItem;
+import static org.junit.Assert.assertThat;
+
+import java.util.List;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -26,16 +32,26 @@ public class GroupHelper extends WebDriverHelperBase{
 	}
 	
 	public SortedListOf<GroupData> getGroups() {
-		if (cachedGroups == null) {
+		/*if (cachedGroups == null) {
 			rebuildCache();
 		}
-		return cachedGroups;
+		return cachedGroups;*/
+		SortedListOf<GroupData> listGroups = new SortedListOf<GroupData>();
+		manager.navigateTo().groupsPage();
+		List <WebElement> checkboxes = findElements(By.name("selected[]"));
+		for (WebElement checkbox : checkboxes) {
+			String title = checkbox.getAttribute("title");
+			String name = title.substring("Select (".length(), title.length() - ")".length());
+			listGroups.add(new GroupData().withName(name));
+		}
+		return listGroups;
 	}
 	private void rebuildCache() {
 		cachedGroups = new SortedListOf<GroupData>(manager.getHibernateHelper().listGroups());
 	}
 
 	public GroupHelper deleteGroup(int index) {
+		manager.navigateTo().groupsPage();
 		selectGroupByIndex(index);
 		submitGroupDeletion();
 		returnToGroupsPage();
@@ -45,12 +61,20 @@ public class GroupHelper extends WebDriverHelperBase{
 
 	
 	public GroupHelper modifyGroup(int index, GroupData group) {
+		manager.navigateTo().groupsPage();
 		initModificationGroup(index);
+		assertThat((manager.getHibernateHelper().listGroups()),hasItem(getGroupFromEditPage()));
     	fillGroupForm(group);
     	submitGroupModification();
     	returnToGroupsPage();
     	rebuildCache();
 		return this;
+	}
+	
+	public GroupData getGroupFromEditPage(){
+		return new GroupData().withName(getAttribute(By.name("group_name"), "value"))
+				.withFooter(getText(By.name("group_footer")))
+				.withHeader(getText(By.name("group_header")));
 	}
 //------------------------------------------------------------------------------------------------------------	
 	
@@ -99,5 +123,7 @@ public class GroupHelper extends WebDriverHelperBase{
 		click(By.name("delete"));
 		cachedGroups = null;
 	}
+	
+	
 	
 }

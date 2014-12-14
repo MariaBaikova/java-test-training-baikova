@@ -85,6 +85,10 @@ public abstract class WebDriverHelperBase extends HelperBase{
 		
 	}
 	
+	protected String getAttribute(By locator, String attribute) {
+		return findElement(locator).getAttribute(attribute);
+		
+	}
 	protected List<WebElement> findElements(By name) {
 		return driver.findElements(name);
 	}

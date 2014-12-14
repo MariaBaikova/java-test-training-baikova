@@ -49,7 +49,7 @@ public class TestBase {
 
 	@DataProvider
 	   public Iterator<Object[]> randomValidContactGenerator(){
-		  List <Object[]> list = wrapContactsForDataProvider(generateRandomContacts(5));
+		  List <Object[]> list = wrapContactsForDataProvider(generateRandomContacts(1));
 		  return list.iterator();
 		}
 		  

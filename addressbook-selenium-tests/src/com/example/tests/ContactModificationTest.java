@@ -1,7 +1,5 @@
 package com.example.tests;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import java.util.Random;
 
 import org.testng.annotations.Test;
@@ -13,7 +11,7 @@ public class ContactModificationTest extends TestBase {
 	  public void modificationSomeContact(ContactData contact) throws Exception {
  
 		//save old state
-		SortedListOf <ContactData> oldList = app.getContactHelper().getContacts();
+		SortedListOf <ContactData> oldList = new  SortedListOf <ContactData> (app.getHibernateHelper().listContacts());
 	    Random rnd  = new Random();
 	    int index = rnd.nextInt(oldList.size()-1);
 	    
@@ -22,6 +20,6 @@ public class ContactModificationTest extends TestBase {
 	  //save new state
 	    SortedListOf <ContactData> newList = app.getContactHelper().getContacts();
 	    //compare state   
-	    assertThat(newList, equalTo(oldList.without(index).withAdded(contact)));
+	    app.getContactHelper().compareContactsListWithDB(newList);
 	  }
 }

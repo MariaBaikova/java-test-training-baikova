@@ -1,7 +1,6 @@
 package com.example.tests;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+
 import java.util.Random;
 
 import org.testng.annotations.Test;
@@ -13,7 +12,7 @@ public class ContactRemoveTests extends TestBase {
 	  public void DeleteSomeContact() throws Exception {
 		
 	  //save old state
-		SortedListOf <ContactData> oldList = app.getContactHelper().getContacts();
+		SortedListOf <ContactData> oldList = new  SortedListOf <ContactData> (app.getHibernateHelper().listContacts());
 	    Random rnd  = new Random();
 	    int index = rnd.nextInt(oldList.size()-1);
 	    app.getContactHelper().deleteContact(index);
@@ -21,6 +20,6 @@ public class ContactRemoveTests extends TestBase {
 	    //save new state
 	    SortedListOf <ContactData> newList = app.getContactHelper().getContacts();
 	    //compare state   
-	    assertThat(newList, equalTo(oldList.without(index)));
+	    app.getContactHelper().compareContactsListWithDB(newList);
 	  }
 }
