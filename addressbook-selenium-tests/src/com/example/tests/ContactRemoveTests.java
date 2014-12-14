@@ -12,13 +12,13 @@ public class ContactRemoveTests extends TestBase {
 	  public void DeleteSomeContact() throws Exception {
 		
 	  //save old state
-		SortedListOf <ContactData> oldList = new  SortedListOf <ContactData> (app.getHibernateHelper().listContacts());
+		SortedListOf <ContactData> oldList =  app.getModel().getContacts();
 	    Random rnd  = new Random();
 	    int index = rnd.nextInt(oldList.size()-1);
 	    app.getContactHelper().deleteContact(index);
 	    
 	    //save new state
-	    SortedListOf <ContactData> newList = app.getContactHelper().getContacts();
+	    SortedListOf <ContactData> newList = app.getContactHelper().getUiContacts();
 	    //compare state   
 	    app.getContactHelper().compareContactsListWithDB(newList);
 	  }

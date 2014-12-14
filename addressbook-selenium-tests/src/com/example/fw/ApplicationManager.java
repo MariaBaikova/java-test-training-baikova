@@ -18,13 +18,21 @@ public class ApplicationManager {
 	private GroupHelper groupHelper;
 	private ContactHelper contactHelper;
 	private HibernateHelper hibernateHelper;
+	private ApplicationModel model;
 	
 	public ApplicationManager(Properties properties){
 		this.properties = properties;
+		model = new ApplicationModel();
+		model.setGroups(getHibernateHelper().listGroups());
+		model.setContacts(getHibernateHelper().listContacts());
 	}
 	
 	public void stop() {
 		driver.quit();
+	}
+	
+	public ApplicationModel getModel(){
+		return model;
 	}
 	
 	public NavigationHelper navigateTo(){
@@ -72,5 +80,9 @@ public class ApplicationManager {
 			hibernateHelper = new HibernateHelper(this);
 		}
 		return hibernateHelper;
+	}
+	
+	public String getProperty(String key){
+		return properties.getProperty(key);
 	}
 }

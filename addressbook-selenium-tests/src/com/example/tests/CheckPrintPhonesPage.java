@@ -9,14 +9,14 @@ public class CheckPrintPhonesPage extends TestBase{
 	@Test
 	public void testCheckCountContactOnPrintPage() throws Exception {
 		//save contact list on main page
-		SortedListOf <ContactData> contactList = app.getContactHelper().getContacts();
+		SortedListOf <ContactData> contactList = app.getContactHelper().getUiContacts();
 		assertEquals(contactList.size(),app.getContactHelper().getCountContactOnPrintPage());
 	}
 	
 	@Test
 	public void testCheckContactOnPrintPage() throws Exception {
 		//save contact list on main page
-		SortedListOf <ContactData> contactList = app.getContactHelper().getContacts();
+		SortedListOf <ContactData> contactList = app.getContactHelper().getUiContacts();
 		app.getContactHelper().checkContactsOnPrintPage(contactList);
 	}
 }

@@ -26,7 +26,7 @@ public class ContactHelper extends WebDriverHelperBase {
 
 	private SortedListOf<ContactData> cachedContacts;
 	
-	public SortedListOf<ContactData> getContacts() {
+	public SortedListOf<ContactData> getUiContacts() {
 		SortedListOf <ContactData> listContacts = new SortedListOf <ContactData>();
 		manager.navigateTo().mainPage();
 		List<WebElement> rows = getContactRows();
@@ -39,10 +39,6 @@ public class ContactHelper extends WebDriverHelperBase {
 		}
 		return listContacts;
 	}
-	
-	private void rebuildCached() {
-		cachedContacts = new SortedListOf <ContactData>(manager.getHibernateHelper().listContacts());
-	}
 
 	
 	public ContactHelper createContact(ContactData contact) {
@@ -51,7 +47,8 @@ public class ContactHelper extends WebDriverHelperBase {
     	fillFormContact(contact,CREATION);
     	submitContactCreation();
     	returnToHomePage();
-    	rebuildCached();
+    	//update model
+    	manager.getModel().addContact(contact);
 		return this;
 	}
 	
@@ -59,19 +56,18 @@ public class ContactHelper extends WebDriverHelperBase {
 		selectContactByIndex(index);
 		submitContactDeletion();	
 		returnToHomePage();
-		rebuildCached();
+		manager.getModel().removeContact(index);
 		return this;
 	}
 	
 	public ContactHelper modifyContact(int index, ContactData contact) {
 		initModificationContact(index);
 		ContactData editContact = getContactFromEditPage();
-		rebuildCached();
-		assertThat(cachedContacts,hasItem(editContact));
+		assertThat(getContactsModel(),hasItem(editContact));
     	fillFormContact(contact, MODIFICATION);
     	submitContactModification();
     	returnToHomePage();
-    	rebuildCached();
+    	manager.getModel().removeContact(index).addContact(contact);
 		return this;
 	}
 	
@@ -116,10 +112,14 @@ public class ContactHelper extends WebDriverHelperBase {
 	
 	public void compareContactsListWithDB(SortedListOf<ContactData> contactList){
 		for (int i = 0; i < contactList.size(); i++){
-			assertThat(contactList.get(i).getFirstName(), equalTo(cachedContacts.get(i).getFirstName()));
-			assertThat(contactList.get(i).getLastName(), equalTo(cachedContacts.get(i).getLastName()));
-			assertThat(contactList.get(i).getTelephone(), anyOf(equalTo(cachedContacts.get(i).getHomeTelephone().replace(" ", "")), equalTo(cachedContacts.get(i).getMobileTelephone().replace(" ", "")),equalTo(cachedContacts.get(i).getWorkTelephone().replace(" ", ""))));
+			assertThat(contactList.get(i).getFirstName(), equalTo(getContactsModel().get(i).getFirstName()));
+			assertThat(contactList.get(i).getLastName(), equalTo(getContactsModel().get(i).getLastName()));
 		}
+	}
+
+
+	private SortedListOf<ContactData> getContactsModel() {
+		return manager.getModel().getContacts();
 	}
 	
 //------------------------------------------------------------------------------------------------	
