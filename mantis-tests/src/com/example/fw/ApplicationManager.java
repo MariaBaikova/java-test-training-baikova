@@ -17,6 +17,7 @@ public class ApplicationManager {
 	private HibernateHelper hibernateHelper;
 	private AccountHelper accountHelper;
 	private MailHelper mailHelper;
+	private JamesHelper jamesHelper;
 
 	
 	public ApplicationManager(Properties properties){
@@ -72,5 +73,12 @@ public class ApplicationManager {
 			mailHelper = new MailHelper(this);
 		}
 		return mailHelper;
+	}
+
+	public JamesHelper getJamesManager() {
+		if (jamesHelper==null){
+			jamesHelper = new JamesHelper(this);
+		}
+		return jamesHelper;
 	}
 }
