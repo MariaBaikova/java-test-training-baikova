@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
 
 public class AccountHelper extends WebDriverHelperBase{
 
@@ -18,7 +19,13 @@ public class AccountHelper extends WebDriverHelperBase{
 		type(By.name("email"),user.email);
 		click(By.cssSelector("input.button"));
 		
-		pause(60000);
+		WebElement errorMessage = findElement(By.cssSelector("table.width50 tbody tr td p"));
+		if (errorMessage != null) {
+			throw new RuntimeException(errorMessage.getText());
+		}
+
+
+		pause(70000);
 		String msg = manager.getMailHelper().getNewMail(user.login, user.password);
 		String confirmationLink = getConfirmationLink(msg);
 		openAbsoluteURL(confirmationLink);

@@ -1,12 +1,8 @@
 package com.example.fw;
 
-import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-
-import com.example.utils.SortedListOf;
 
 public class HibernateHelper extends HelperBase {
 
@@ -14,26 +10,24 @@ public class HibernateHelper extends HelperBase {
 	  super(manager);
 	}
 
-	/*public SortedListOf<GroupData> listGroups() {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction trans = session.beginTransaction();
-		try {
-          return new SortedListOf<GroupData>(
-              (List<GroupData>) session.createQuery("from GroupData").list());
-		} finally {
-          trans.commit();
-		}
+	
+    public void deleteUser(User user) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans  = session.beginTransaction();
+        session.delete(user);
+        trans.commit();
+    }
+    
+    public String getUserId(String login) {
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction trans = session.beginTransaction();
+        try {
+        	return session.createQuery("select id from User where login=?")
+        			.setParameter(0, login).uniqueResult().toString();
+        } finally {
+            trans.commit();
+  		}
 	}
 
-	public SortedListOf<ContactData> listContacts() {
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		Transaction trans = session.beginTransaction();
-		try {
-          return new SortedListOf<ContactData>(
-              (List<ContactData>) session.createQuery("from ContactData").list());
-		} finally {
-          trans.commit();
-		}
-	}*/
 
 }

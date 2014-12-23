@@ -73,7 +73,11 @@ public abstract class WebDriverHelperBase extends HelperBase{
 	}
 	
 	protected WebElement findElement(By locator) {
-		return driver.findElement(locator);
+		try {
+			return driver.findElement(locator);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	protected void getURL(String string) {
