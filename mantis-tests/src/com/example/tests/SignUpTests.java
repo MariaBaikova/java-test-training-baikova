@@ -4,31 +4,41 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 
+
+import com.example.fw.AccountHelper;
+import com.example.fw.JamesHelper;
 import com.example.fw.User;
 
 public class SignUpTests extends TestBase{
 	
 	public User user = new User().setLogin("testuser1").setPassword("123456")
 			.setEmail("testuser1@localhost");
+	
+	private JamesHelper james;
+	private AccountHelper accHelper;
 	@BeforeClass
 	public void createUser(){
-		if (! app.getJamesManager().doesUserExist(user.login)){
-			app.getJamesManager().createUser(user.login, user.password);
+		james = app.getJamesManager();
+		accHelper = app.getAccountHelper();
+		if (! james.doesUserExist(user.login)){
+			james.createUser(user.login, user.password);
 		}
 	}
 	
 	@Test
 	public void newUserShouldSignUp() {
-		app.getAccountHelper().signup(user);
-		assertTrue(app.getAccountHelper().isLogged(user));
+		accHelper.signup(user);
+		accHelper.login(user);
+		assertThat(accHelper.loggedUser(), equalTo(user.login));
 	}
 
-	@AfterClass
+	//@AfterClass
 	public void deleteMailUser(){
-		if (app.getJamesManager().doesUserExist(user.login)){
-			app.getJamesManager().deleteUser(user.login);
+		if (james.doesUserExist(user.login)){
+			james.deleteUser(user.login);
 		}
 	}
 }

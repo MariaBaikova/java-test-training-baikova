@@ -12,28 +12,25 @@ public class AccountHelper extends WebDriverHelperBase{
 	}
 
 	public void signup(User user) {
-	//	openURL("/signup_page.php");
 		openURL("/");
 		click(By.xpath(".//*[@href='signup_page.php']")); 
-		//cssSelector("span.bracket-link"));
 		type(By.name("username"),user.login);
 		type(By.name("email"),user.email);
 		click(By.cssSelector("input.button"));
 		
-		pause(3000);
+		pause(60000);
 		String msg = manager.getMailHelper().getNewMail(user.login, user.password);
 		String confirmationLink = getConfirmationLink(msg);
 		openAbsoluteURL(confirmationLink);
 		
 		type(By.name("password"),user.password);
-		type(By.name("password1"),user.password);
+		type(By.name("password_confirm"),user.password);
 		click(By.cssSelector("input.button"));
 	}
 
 
-	public boolean isLogged(User user) {
-		// TODO Auto-generated method stub
-		return false;
+	public String loggedUser() {
+		return getText(By.xpath("html/body/table[1]/tbody/tr/td[1]/span[1]"));
 	}
 	
 	public String getConfirmationLink(String msg) {
@@ -44,6 +41,14 @@ public class AccountHelper extends WebDriverHelperBase{
 		} else {
 			return "";
 		}
+	}
+
+	public void login(User user) {
+		openURL("/");
+		type(By.name("username"),user.login);
+		type(By.name("password"),user.password);
+		click(By.cssSelector("input.button"));
+		
 	}
 
 }
